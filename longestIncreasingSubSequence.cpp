@@ -1,27 +1,31 @@
 #include <bits/stdc++.h>
-#include <chrono>
 using namespace std;
-using namespace std::chrono;
-int dfs(vector<int> &nums, int i, int prev)
+int dfs(vector<int> &nums, int i, int prevI,vector<vector<int>>&dp)
 {
-    if (i >= nums.size())
-        return 0;
+    if (i >= nums.size())return 0;
+
+    if(dp[i][prevI+1]!=-1)return dp[i][prevI+1];
+
     int pick = 0;
-    int dontPick = dfs(nums, i + 1, prev);
-    if (nums[i] > prev)
+    int dontPick = dfs(nums, i + 1, prevI,dp);
+
+    if (prevI==-1 or nums[i] > nums[prevI])
     {
-        pick = 1 + dfs(nums, i + 1, nums[i]);
+        pick = 1 + dfs(nums, i + 1, i,dp);
     }
-    return max(pick, dontPick);
+    return dp[i][prevI+1]=max(pick, dontPick);
 }
 int lengthOfLIS(vector<int> &nums)
 {
-    return dfs(nums, 0, -1);
+    int n=nums.size();
+    vector<vector<int>>dp(n,vector<int>(n+1,-1));
+    return dfs(nums, 0, -1,dp);
+
 }
 
 int main()
 {
-    vector<int> nums{10, 9, 2, 5, 3, 7, 101, 18,9,8,2,6,0,1,4,7,0,11,131,4,9,10};
+    vector<int> nums{10, 9, 2, 5, 3, 7, 101, 18};
     int result = lengthOfLIS(nums);
     cout << result << endl;
     return 0;
@@ -46,5 +50,5 @@ int main()
  *      -> don't pick the current number
  *
  * Recursion Done
- *
+ * Cache Done in Recursion
  */
