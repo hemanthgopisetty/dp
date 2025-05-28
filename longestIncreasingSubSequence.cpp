@@ -15,12 +15,28 @@ int dfs(vector<int> &nums, int i, int prevI,vector<vector<int>>&dp)
     }
     return dp[i][prevI+1]=max(pick, dontPick);
 }
+
 int lengthOfLIS(vector<int> &nums)
 {
     int n=nums.size();
-    vector<vector<int>>dp(n,vector<int>(n+1,-1));
-    return dfs(nums, 0, -1,dp);
 
+    //Top Down Approach 
+    // vector<vector<int>>dp(n,vector<int>(n+1,-1));
+    // return dfs(nums, 0, -1,dp);
+
+    //Bottom Up
+    //need to revisit this bottom up soon
+    int ans=1;
+    vector<int>dp(n,1);
+    for(int i=0;i<n;i++){
+        for(int j=0;j<i;j++){
+            if(nums[i]>nums[j]){
+                dp[i]=max(dp[i],dp[j]+1);
+                ans=max(dp[i],ans);
+            }
+        }
+    }
+    return ans;
 }
 
 int main()
@@ -49,6 +65,21 @@ int main()
  *      -> pick the current if prev greater than curr
  *      -> don't pick the current number
  *
+ * -> Top Down Approach
  * Recursion Done
  * Cache Done in Recursion
+ *  
+ * -> Bottom Up Approach
+ *  in top down we are storing the results as
+ * dp[i][prevI] -> where it stores the longest increasing 
+ * sub sequence  from i to last prevI 
+ * 
+ * we can further reduce this to dp[i] -> where it stores the longest Increasing
+ * sub sequence upto i
+ * 
+ * every element is itself a lis right ...........
+ * to compute this we need to look at all the indices till i
+ * for i to n :
+ *  for j to i :
+ *      if nums[i]>nums[j]
  */
