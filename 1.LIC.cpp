@@ -21,22 +21,44 @@ int lengthOfLIS(vector<int> &nums)
     int n=nums.size();
 
     //Top Down Approach 
+
     // vector<vector<int>>dp(n,vector<int>(n+1,-1));
     // return dfs(nums, 0, -1,dp);
 
     //Bottom Up
-    //need to revisit this bottom up soon
-    int ans=1;
-    vector<int>dp(n,1);
-    for(int i=0;i<n;i++){
-        for(int j=0;j<i;j++){
-            if(nums[i]>nums[j]){
-                dp[i]=max(dp[i],dp[j]+1);
-                ans=max(dp[i],ans);
+    if(n==0)return 0;
+    vector<vector<int>>dp(n,vector<int>(n,0));
+    //Base Case
+    dp[0][0]=1;
+
+    for(int i=1;i<n;i++)
+    {
+        for(int j=0;j<=i;j++)
+        {
+            dp[i][j]=dp[i-1][j];
+
+            for(int k=0;k<j;k++){
+                if(nums[k]<nums[j]){
+                    dp[i][j]=max(dp[i][j],dp[i-1][k]+1);
+                }
+            }
+
+            if(j==i){
+                dp[i][j]=max(dp[i][j],1);
             }
         }
     }
-    return ans;
+    int ans=-1;
+    for(int i=0;i<n;i++)
+    {
+        
+        for(int j=0;j<n;j++)
+        {
+
+            ans=max(ans,dp[i][j]);
+        }
+    }
+    return ans ;
 }
 
 int main()

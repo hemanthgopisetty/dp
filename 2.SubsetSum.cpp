@@ -2,8 +2,9 @@
 using namespace std;
 class Solution {
     public :
+    bool canPartition(vector<int>&nums)
+    {
 
-    bool canPartition(vector<int>&nums){
         int n=nums.size();
         if(n==0)return false;
         int totalSum=0;
@@ -11,13 +12,24 @@ class Solution {
         if(totalSum%2!=0)return false;
 
         vector<vector<bool>>dp(n+1,vector<bool>(totalSum+1,false));
+        int target = totalSum/2;
         //base case 
         for(int i=0;i<n;i++)dp[i][0]=1;
-        //
+
+        for(int i=1;i<=n;i++)
+        {
+            int val=nums[i-1];
+            for(int sum=0;sum<=target;sum++)
+            {
+                
+            }
+        }
+
     }
 };
 
-int main(){
+int main()
+{
 
     vector<int>nums{};
     Solution sol;
