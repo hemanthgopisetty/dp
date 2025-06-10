@@ -7,31 +7,52 @@ class Solution {
 
         int n=nums.size();
         if(n==0)return false;
+
+
         int totalSum=0;
         for(int i=0;i<n;i++)totalSum+=nums[i];
         if(totalSum%2!=0)return false;
 
-        vector<vector<bool>>dp(n+1,vector<bool>(totalSum+1,false));
         int target = totalSum/2;
-        //base case 
-        for(int i=0;i<n;i++)dp[i][0]=1;
+        //Fill only when total is even sum 
+        //Initially all are false
+        vector<vector<bool>>dp(n+1,vector<bool>(target+1,false));
+  
 
-        for(int i=1;i<=n;i++)
-        {
-            int val=nums[i-1];
-            for(int sum=0;sum<=target;sum++)
+        //as becuase with no elements in the array
+        //no of elements in the array are zero with this we can make sum zero 
+        
+        //Fill all if we don't include any number in the sum we
+        //can get zero sum
+       for(int i=0;i<=n;i++)dp[i][0]=true;
+
+
+        for(int i=1;i<=n;i++){
+
+            int num = nums[i-1];
+            
+            for(int sum=1;sum<=target;sum++)
             {
+                bool exclude=dp[i-1][sum];
+
+                bool include=false;
+                //if i include
+                if(sum>=num)
+                {
+                    include = dp[i-1][sum-num];
+                }
                 
+                dp[i][sum]=(include or exclude);
             }
         }
-
+        return dp[n][target];
     }
 };
 
 int main()
 {
 
-    vector<int>nums{};
+    vector<int>nums{2,4};
     Solution sol;
     auto result = sol.canPartition(nums);
     cout<<boolalpha<<result<<endl;
