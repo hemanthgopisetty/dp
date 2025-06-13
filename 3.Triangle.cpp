@@ -35,6 +35,7 @@ private:
     }
 
     // Bottom Up Approach
+    //2D DP
     int bfs(vector<vector<int>> &triangle)
     {
         n = triangle.size();
