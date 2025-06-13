@@ -35,7 +35,7 @@ private:
     }
 
     // Bottom Up Approach
-    //2D DP
+    // 2D DP
     int bfs(vector<vector<int>> &triangle)
     {
         n = triangle.size();
@@ -46,7 +46,7 @@ private:
             dp[i].resize(triangle[i].size());
         }
         // Intialize the base case
-        for (int j = 0; j < triangle[n-1].size(); j++)
+        for (int j = 0; j < triangle[n - 1].size(); j++)
         {
             dp[n - 1][j] = triangle[n - 1][j];
         }
@@ -59,7 +59,7 @@ private:
             for (int j = 0; j < triangle[i].size(); j++)
             {
                 int element = triangle[i][j];
-                dp[i][j]=element+min(dp[i+1][j],dp[i+1][j+1]);
+                dp[i][j] = element + min(dp[i + 1][j], dp[i + 1][j + 1]);
             }
         }
 
@@ -136,5 +136,33 @@ int main()
         return min(left, right);
     }
 
- *
+ *    int bfs(vector<vector<int>> &triangle)
+    {
+        n = triangle.size();
+        dp = vector<vector<int>>(n);
+        // Resize the array
+        for (int i = 0; i < n; i++)
+        {
+            dp[i].resize(triangle[i].size());
+        }
+        // Intialize the base case
+        for (int j = 0; j < triangle[n-1].size(); j++)
+        {
+            dp[n - 1][j] = triangle[n - 1][j];
+        }
+
+        // Fill the Table by building the sol
+        // from large problems to smaller problems
+        // bottom - up
+        for (int i = n - 2; i >= 0; i--)
+        {
+            for (int j = 0; j < triangle[i].size(); j++)
+            {
+                int element = triangle[i][j];
+                dp[i][j]=element+min(dp[i+1][j],dp[i+1][j+1]);
+            }
+        }
+
+        return dp[0][0];
+    }
  */
