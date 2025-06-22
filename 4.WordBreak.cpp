@@ -11,7 +11,7 @@ using namespace std;
 class Solution
 {
 private:
-    vector<int> dp;
+    vector<bool> dp;
     string s;
     unordered_set<string> dict;
 
@@ -41,13 +41,34 @@ private:
 public:
     bool wordBreak(string &s, vector<string> &wordDict)
     {
-        this->dp = vector<int>(s.size(), -1);
-        this->s = s;
-        for (auto &word : wordDict)
+        // Top Down Code
+        //  this->dp = vector<int>(s.size(), -1);
+        //  this->s = s;
+        //  for (auto &word : wordDict)
+        //  {
+        //      dict.insert(word);
+        //  }
+        //  return dfs(0);
+
+        // Bottom Up
+        this->dict = unordered_set<string>(wordDict.begin(), wordDict.end());
+        this->dp = vector<bool>(s.size() + 1, false);
+        dp[0] = true;
+
+        for (int i = 1; i <=s.size(); i++)
         {
-            dict.insert(word);
+            for (int j = 0; j < i; j++)
+            {
+                if (dp[j])
+                {
+                    if (dict.count(s.substr(j, i - j)))
+                    {
+                        dp[i] = true;
+                    }
+                }
+            }
         }
-        return dfs(0);
+        return dp[s.size()];
     }
 };
 
@@ -62,24 +83,24 @@ int main()
 }
 
 /**
- * 
- * if we choose a word and move forward then we will get result out of that 
+ *
+ * if we choose a word and move forward then we will get result out of that
  * path
- * 
+ *
  * better to try many paths that will give the overall answer
  * break the problem and solve the small and use that for large
  * in this process we need so many function calls we use
  * dp cache array to store the results
- * 
- * that will solve exponential recursion 
+ *
+ * that will solve exponential recursion
  * at each index i we have more than one call
- * 
+ *
  * so the time complexity is 2^n
- * 
+ *
  * and s.c is O(n)
- * 
- * cache the rework by storing 
- * 
+ *
+ * cache the rework by storing
+ *
  * we will choose one character
  * check is that in dict
  * ift's not add one character
@@ -89,9 +110,9 @@ int main()
  * repeat if we found false in this journey
  * then we add one more character and start the journey
  * if we didn't found anything then false return or return true
- * 
+ *
  * that's it dudee
- * 
+ *
  * we need to do botto up too dudee
- * 
+ *
  */
