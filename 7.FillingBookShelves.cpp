@@ -27,11 +27,12 @@ class Solution
 public:
     vector<vector<int>> books;
     int shelfWidth = 0;
+    vector<vector<int>>dp;
     int dfs(int remaningWidth, int currentHeight, int i)
     {
         if (i == this->books.size())
             return currentHeight;
-
+        if(dp[i][remaningWidth]!=-1)return dp[i][remaningWidth];
         int currentBookThickness = books[i][0];
         int currentBookHeight = books[i][1];
 
@@ -45,12 +46,13 @@ public:
 
         int newShelf = currentHeight + dfs(this->shelfWidth - currentBookThickness, currentBookHeight, i + 1);
 
-        return min(currentShelf, newShelf);
+        return dp[i][remaningWidth]=min(currentShelf, newShelf);
     }
     int minHeightShelves(vector<vector<int>> &books, int shelfWidth)
     {
         this->books = books;
         this->shelfWidth = shelfWidth;
+        this->dp = vector<vector<int>>(this->books.size(),vector<int>(shelfWidth+1,-1));
         // this is the shelf with no books
         return dfs(shelfWidth, 0, 0);
     }
